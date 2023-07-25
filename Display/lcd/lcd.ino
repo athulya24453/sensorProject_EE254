@@ -9,6 +9,10 @@ float inputVoltage=0.0;
 
 float temp=0.0;
 
+int num;
+
+int POT_VALUE=0;
+
 void setup()
 {
   Serial.begin(9600);
@@ -20,18 +24,21 @@ void loop()
 {
   float analog_value = analogRead(A0);
   inputVoltage = (analog_value * 5.0) / 1024.0; 
-  Serial.println(inputVoltage):
+  // Serial.println(inputVoltage);
   to_LCD(inputVoltage);
+  manual_resistance();    
 }
 
 void increase_resistance()
 {
   pot.increase(5);
+  POT_VALUE+=5;
 }
 
 void decrese_resistance()
 {
   pot.decrease(5);
+  POT_VALUE-=5;
 }
 
 void to_LCD(float vout)
@@ -41,6 +48,17 @@ void to_LCD(float vout)
   lcd.print(vout);
 }
 
+void manual_resistance()
+{
+  if(Serial.available())
+  {
+    num=Serial.parseInt();
+    Serial.println(num);
+    if(POT_VALUE>num){
+      num=2;
+    }            
+    }  
+}
 
 
 
